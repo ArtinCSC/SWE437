@@ -1,5 +1,4 @@
 
-
 /* SWE437-001
  * Assignment 2
  * Developed by: Amilcar Martinez and Artin Melakian
@@ -91,17 +90,21 @@ public class quoteserverCLI {
 				search(searchText, 4);
 				break;
 
-			case 5: // user input is 5, exit the program
-				System.exit(0);
+			case 5: // user input is 5
+				System.out.println("Enter the quote and author separately.");
+				appendQuote(helper(s, "Enter the quote:\n"), helper(s, "Enter the author:\n"));
 				break;
 
-			case 6: // user input 6 - 10 corresponds to the "RECENT SEARCH" menu. Take the recent
+			case 6: // user input is 5, exit the program
+				System.exit(0);
+				break;
+			case 7:// user input 6 - 10 corresponds to the "RECENT SEARCH" menu. Take the recent
 					// search the user selected and display its results again.
-			case 7:
 			case 8:
 			case 9:
 			case 10:
-				if ((input - 6) < searchList.size())
+			case 11:
+				if ((input - 7) < searchList.size())
 				// Subcontract 6 from input, its the actual location of the recent search
 				// selected by the user in recent searches string list.
 				// If the actual location selected exists, print it, else print error.
@@ -112,10 +115,7 @@ public class quoteserverCLI {
 					System.out.println("Invalid selection, empty search string.");
 				}
 				break;
-			case 11:
-				System.out.println("Enter the quote and author separately.");
-				appendQuote(helper(s, "Enter the quote:\n"), helper(s, "Enter the author:\n"));
-				break;
+
 			} // end switch
 
 			System.out.println();
@@ -182,56 +182,56 @@ public class quoteserverCLI {
 	private static void appendQuote(String quote, String author) {
 
 		QuoteList searchRes = quoteList.search(quote, QuoteList.SearchTextVal);
-		if(searchRes.getSize() != 0) {
+		if (searchRes.getSize() != 0) {
 			System.out.println("The quote is already exist");
-		}else {
-		
-		if(author == null || author == "")
-			author = "Unknown";
-		// check for error
+		} else {
 
-		try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse("quotes.xml");
+			if (author == null || author == "")
+				author = "Unknown";
+			// check for error
 
-			// Get the root element
-			Node quote_list = doc.getFirstChild();
+			try {
+				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+				Document doc = docBuilder.parse("quotes.xml");
 
-			// Get the quote-list element by tag name directly
-			Node attQuote_list = doc.getElementsByTagName("quote-list").item(0);
-			Element attQuote = doc.createElement("quote");	
-			
-			// append a new node (quote) to quote attribute
-			Element quote_text = doc.createElement("quote-text");
-			quote_text.appendChild(doc.createTextNode(quote));
-			attQuote.appendChild(quote_text);
+				// Get the root element
+				Node quote_list = doc.getFirstChild();
 
-			// append a new node (author) to quote attribute
-			Element quote_author = doc.createElement("author");
-			quote_author.appendChild(doc.createTextNode(author));
-			attQuote.appendChild(quote_author);
+				// Get the quote-list element by tag name directly
+				Node attQuote_list = doc.getElementsByTagName("quote-list").item(0);
+				Element attQuote = doc.createElement("quote");
 
-			attQuote_list.appendChild(attQuote);
-			
-			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File("quotes.xml"));
-			transformer.transform(source, result);
+				// append a new node (quote) to quote attribute
+				Element quote_text = doc.createElement("quote-text");
+				quote_text.appendChild(doc.createTextNode(quote));
+				attQuote.appendChild(quote_text);
 
-			System.out.println("\nThe new quote was added to the list.\n");
+				// append a new node (author) to quote attribute
+				Element quote_author = doc.createElement("author");
+				quote_author.appendChild(doc.createTextNode(author));
+				attQuote.appendChild(quote_author);
 
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
-		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (SAXException sae) {
-			sae.printStackTrace();
-		}
+				attQuote_list.appendChild(attQuote);
+
+				// write the content into xml file
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				DOMSource source = new DOMSource(doc);
+				StreamResult result = new StreamResult(new File("quotes.xml"));
+				transformer.transform(source, result);
+
+				System.out.println("\nThe new quote was added to the list.\n");
+
+			} catch (ParserConfigurationException pce) {
+				pce.printStackTrace();
+			} catch (TransformerException tfe) {
+				tfe.printStackTrace();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			} catch (SAXException sae) {
+				sae.printStackTrace();
+			}
 		}
 	}
 
@@ -271,7 +271,7 @@ public class quoteserverCLI {
 				}
 			}
 		} // end of primary if statement
-	
+
 	}
 
 	/**
@@ -292,16 +292,13 @@ public class quoteserverCLI {
 			}
 		}
 
-
-		System.out.print(String.format("%-40s%s", "MAIN MENU", "RECENT SEARCHES") + "\n" 
-				+ String.format("%-40s%s%s", "1. Another random quote", "7. ", tempList.get(0)) 	+ "\n"
+		System.out.print(String.format("%-40s%s", "MAIN MENU", "RECENT SEARCHES") + "\n"
+				+ String.format("%-40s%s%s", "1. Another random quote", "7. ", tempList.get(0)) + "\n"
 				+ String.format("%-40s%s%s", "2. Search a quote by author", "8. ", tempList.get(1)) + "\n"
-				+ String.format("%-40s%s%s", "3. Search a quote by quote", "9. ", tempList.get(2)) 	+ "\n"
-				+ String.format("%-40s%s%s", "4. Search a quote by both", "10. ", tempList.get(3)) 	+ "\n"
-				+ String.format("%-40s%s%s", "5. Add a quote", "11. ", tempList.get(4)) 					+ "\n"
-				+ String.format("%-40s%s", "6. Exit ", " ") 										+  "\n" + ">> "
-				);
+				+ String.format("%-40s%s%s", "3. Search a quote by quote", "9. ", tempList.get(2)) + "\n"
+				+ String.format("%-40s%s%s", "4. Search a quote by both", "10. ", tempList.get(3)) + "\n"
+				+ String.format("%-40s%s%s", "5. Add a quote", "11. ", tempList.get(4)) + "\n"
+				+ String.format("%-40s%s", "6. Exit ", " ") + "\n" + ">> ");
 	}
 
 }
-
