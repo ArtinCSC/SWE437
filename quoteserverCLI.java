@@ -90,17 +90,23 @@ public class quoteserverCLI {
 				search(searchText, 4);
 				break;
 
-			case 5: // user input is 5, exit the program
-				System.exit(0);
-				break;
+			case 5: // user input is 5
+					System.out.println("Enter the quote and author separately.");
+					appendQuote(helper(s, "Enter the quote:\n"), helper(s, "Enter the author:\n"));
+					break;
+				
 
-			case 6: // user input 6 - 10 corresponds to the "RECENT SEARCH" menu. Take the recent
-					// search the user selected and display its results again.
-			case 7:
+
+			case 6: 	// user input is 5, exit the program
+					System.exit(0);
+					break;
+			case 7:// user input 6 - 10 corresponds to the "RECENT SEARCH" menu. Take the recent
+				// search the user selected and display its results again.
 			case 8:
 			case 9:
 			case 10:
-				if ((input - 6) < searchList.size())
+			case 11:
+				if ((input - 7) < searchList.size())
 				// Subcontract 6 from input, its the actual location of the recent search
 				// selected by the user in recent searches string list.
 				// If the actual location selected exists, print it, else print error.
@@ -111,10 +117,7 @@ public class quoteserverCLI {
 					System.out.println("Invalid selection, empty search string.");
 				}
 				break;
-			case 11:
-				System.out.println("Enter the quote and author separately.");
-				appendQuote(helper(s, "Enter the quote:\n"), helper(s, "Enter the author:\n"));
-				break;
+
 			} // end switch
 
 			System.out.println();
@@ -285,12 +288,18 @@ public class quoteserverCLI {
 		}
 
 		System.out.println("______________________________________\n");
-		System.out.print(String.format("%-40s%s", "MAIN MENU", "RECENT SEARCHES") + "\n"
-				+ String.format("%-40s%s%s", "1. Another random quote", "6. ", tempList.get(0)) + "\n"
-				+ String.format("%-40s%s%s", "2. Search a quote by author", "7. ", tempList.get(1)) + "\n"
-				+ String.format("%-40s%s%s", "3. Search a quote by quote", "8. ", tempList.get(2)) + "\n"
-				+ String.format("%-40s%s%s", "4. Search a quote by both", "9. ", tempList.get(3)) + "\n"
-				+ String.format("%-40s%s%s", "5. Exit", "10. ", tempList.get(4)) + "\n" + ">> ");
+		/*
+		 *  The following menu uses String.format to achieve the following
+		 *   The first string is left justified and has a space of 40 spaces wide, the following strings do not have special formatting
+		 */
+		System.out.print(String.format("%-40s%s", "MAIN MENU", "RECENT SEARCHES") + "\n" 
+				+ String.format("%-40s%s%s", "1. Another random quote", "7. ", tempList.get(0)) 	+ "\n"
+				+ String.format("%-40s%s%s", "2. Search a quote by author", "8. ", tempList.get(1)) + "\n"
+				+ String.format("%-40s%s%s", "3. Search a quote by quote", "9. ", tempList.get(2)) 	+ "\n"
+				+ String.format("%-40s%s%s", "4. Search a quote by both", "10. ", tempList.get(3)) 	+ "\n"
+				+ String.format("%-40s%s%s", "5. Add a quote", "11. ", tempList.get(4)) 					+ "\n"
+				+ String.format("%-40s%s", "6. Exit ", " ") 										+  "\n" + ">> "
+				);
 	}
 
 }
