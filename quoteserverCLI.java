@@ -232,7 +232,10 @@ public class quoteserverCLI {
 			} catch (SAXException sae) {
 				sae.printStackTrace();
 			}
-		}
+			//	read quotes.xml
+			QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+			quoteList = parser.getQuoteList();
+		}//end of else statement
 	}
 
 	/**
