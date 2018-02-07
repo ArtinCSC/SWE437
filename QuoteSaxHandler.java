@@ -1,4 +1,3 @@
-package quotes;
 
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.*;
