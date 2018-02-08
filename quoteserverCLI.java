@@ -181,61 +181,70 @@ public class quoteserverCLI {
 	 */
 	private static void appendQuote(String quote, String author) {
 
+		if (quote == null || quote.equals("")) {
+			System.out.println("Sorry:(\nCould not catch the quote!\nPlease try again!");
+			return;
+		}
 		QuoteList searchRes = quoteList.search(quote, QuoteList.SearchTextVal);
 		if (searchRes.getSize() != 0) {
-			System.out.println("The quote is already exist");
-		} else {
-
-			if (author == null || author == "")
-				author = "Unknown";
-			// check for error
-
-			try {
-				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-				Document doc = docBuilder.parse("quotes.xml");
-
-				// Get the root element
-				Node quote_list = doc.getFirstChild();
-
-				// Get the quote-list element by tag name directly
-				Node attQuote_list = doc.getElementsByTagName("quote-list").item(0);
-				Element attQuote = doc.createElement("quote");
-
-				// append a new node (quote) to quote attribute
-				Element quote_text = doc.createElement("quote-text");
-				quote_text.appendChild(doc.createTextNode(quote));
-				attQuote.appendChild(quote_text);
-
-				// append a new node (author) to quote attribute
-				Element quote_author = doc.createElement("author");
-				quote_author.appendChild(doc.createTextNode(author));
-				attQuote.appendChild(quote_author);
-
-				attQuote_list.appendChild(attQuote);
-
-				// write the content into xml file
-				TransformerFactory transformerFactory = TransformerFactory.newInstance();
-				Transformer transformer = transformerFactory.newTransformer();
-				DOMSource source = new DOMSource(doc);
-				StreamResult result = new StreamResult(new File("quotes.xml"));
-				transformer.transform(source, result);
-
-				System.out.println("\nThe new quote was added to the list.\n");
-
-			} catch (ParserConfigurationException pce) {
-				pce.printStackTrace();
-			} catch (TransformerException tfe) {
-				tfe.printStackTrace();
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			} catch (SAXException sae) {
-				sae.printStackTrace();
+			Quote quoteTmp;
+			for (int i = 0; i < searchRes.getSize(); i++) {
+				quoteTmp = searchRes.getQuote(i);
+				if (quoteTmp.getQuoteText().equals(quote)) {
+					System.out.println("The quote is already exist");
+					return;
+				}
 			}
-			//	read quotes.xml
-			QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
-			quoteList = parser.getQuoteList();
-		}//end of else statement
+		}
+
+		if (author == null || author == "")
+			author = "Unknown";
+
+		try {
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse("quotes.xml");
+
+			// Get the root element
+			Node quote_list = doc.getFirstChild();
+
+			// Get the quote-list element by tag name directly
+			Node attQuote_list = doc.getElementsByTagName("quote-list").item(0);
+			Element attQuote = doc.createElement("quote");
+
+			// append a new node (quote) to quote attribute
+			Element quote_text = doc.createElement("quote-text");
+			quote_text.appendChild(doc.createTextNode(quote));
+			attQuote.appendChild(quote_text);
+
+			// append a new node (author) to quote attribute
+			Element quote_author = doc.createElement("author");
+			quote_author.appendChild(doc.createTextNode(author));
+			attQuote.appendChild(quote_author);
+
+			attQuote_list.appendChild(attQuote);
+
+			// write the content into xml file
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File("quotes.xml"));
+			transformer.transform(source, result);
+
+			System.out.println("\nThe new quote was added to the list.\n");
+
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (TransformerException tfe) {
+			tfe.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (SAXException sae) {
+			sae.printStackTrace();
+		}
+		// read quotes.xml
+		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+		quoteList = parser.getQuoteList();
 	}
 
 	/**
