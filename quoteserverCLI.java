@@ -1,6 +1,6 @@
 
 /* SWE437-001
- * Assignment 2
+ * Assignment 3
  * Developed by: Amilcar Martinez and Artin Melakian
  * 
  * 
@@ -10,8 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,14 +23,10 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class quoteserverCLI {
-
-	private final static Logger LOGGER = Logger.getLogger(quoteserverCLI.class.getName());
 
 	// quoteList will hold the list of quotes read in from quotes.xml
 	private static QuoteList quoteList;
@@ -40,37 +35,30 @@ public class quoteserverCLI {
 
 	public static void main(String[] args) {
 
-		LOGGER.setLevel(Level.ALL);
-
 		Scanner s = new Scanner(System.in);
-		Scanner i = new Scanner(System.in);
+		Scanner menuInput = new Scanner(System.in);
 		String searchText = null;
-		QuoteList randQ = new QuoteList();
+
 		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
-		// Loads all quotes in quotes.xlm into randQ
-
+		// Loads all quotes in quotes.xlm into quoteList
 		quoteList = parser.getQuoteList();
-
-		// quoteList = parser.getQuoteList();
-
 		// Get random quote and print it
 		Quote randomQuote = quoteList.getRandomQuote();
 		printRandomQuote(randomQuote);
 
-		// Main while loop, program runs until user triggers program Exit. See Switch
-		// statement.
+		// Main while loop, program runs until user triggers program Exit. 
+		// See Switch statement.
 		while (true) {
 			// Print the main menu and prompt for user input
 			menu();
-			int input = i.nextInt();
+			int input = menuInput.nextInt();
 
 			switch (input) {
 			case 1: // User input is 1, print another random quote
-
 				randomQuote = quoteList.getRandomQuote();
 				printRandomQuote(randomQuote);
-
 				break;
+				
 			case 2: // user input is 2, prompt user for search string, search by author
 				searchText = helper(s, "Enter the author's name to search:\n");
 				maintainSearchList(searchText);
@@ -90,27 +78,28 @@ public class quoteserverCLI {
 				search(searchText, 4);
 				break;
 
-			case 5: // user input is 5
+			case 5: // user input is 5, prompt user to enter quote and author, append to list if
+					// the quote doesn't already exist.
 				System.out.println("Enter the quote and author separately.");
-				appendQuote(helper(s, "Enter the quote:\n"), helper(s, "Enter the author:\n"));
+				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"));
 				break;
 
-			case 6: // user input is 5, exit the program
+			case 6: // user input is 6, exit the program
 				System.exit(0);
 				break;
-			case 7:// user input 6 - 10 corresponds to the "RECENT SEARCH" menu. Take the recent
+			case 7:// user input 7 - 10 corresponds to the "RECENT SEARCH" menu. Take the recent
 					// search the user selected and display its results again.
 			case 8:
 			case 9:
 			case 10:
 			case 11:
 				if ((input - 7) < searchList.size())
-				// Subcontract 6 from input, its the actual location of the recent search
+				// Subtract 7 from input, its the actual location of the recent search
 				// selected by the user in recent searches string list.
 				// If the actual location selected exists, print it, else print error.
 				{
-					search(searchList.get(input - 6), 4);
-					maintainSearchList(searchList.get(input - 6));
+					search(searchList.get(input - 7), 4);
+					maintainSearchList(searchList.get(input - 7));
 				} else {
 					System.out.println("Invalid selection, empty search string.");
 				}
@@ -121,7 +110,6 @@ public class quoteserverCLI {
 			System.out.println();
 
 		} // end while loop
-
 	} // end of main
 
 	/**
@@ -132,10 +120,9 @@ public class quoteserverCLI {
 	 */
 	private static void printRandomQuote(Quote quote) {
 
-		System.out.println("         The GMU Quote Generator" + "\n______________________________________");
-		System.out.println("\nRandom quote of the day\n");
-		System.out.println(quote.getQuoteText());
-
+		System.out.println("         The GMU Quote Generator" + "\n_______________________________________________________");
+		System.out.println("Random quote of the day\n");
+		System.out.println( quote.getQuoteText() );
 		System.out.println("                  " + quote.getAuthor());
 	}
 
@@ -164,41 +151,51 @@ public class quoteserverCLI {
 	 */
 	private static String helper(Scanner s, String message) {
 
-		System.out.println(message);
+		System.out.print(message);
 		String searchText = "";
 		searchText = s.nextLine();
 		return searchText;
 	}
 
 	/**
-	 * @purpose to append a new quote to the list of the existed quote list.
+	 * @purpose to append a new quote to the list of the existing quote list.
 	 * 
 	 * @param quote
-	 *            String type, user input quote to add to the existed quote list.
+	 *            String type, user input quote to add to the existing quote list.
 	 * @param author
 	 *            String type, user input author's name of quote, if it is null, the
 	 *            unknown author will be added to list.
 	 */
 	private static void appendQuote(String quote, String author) {
-
-		if (quote == null || quote.equals("")) {
+		
+		//check if user didn't enter a quote, or entered all spaces
+		if (quote.equals(null) || quote.trim().equals("")) {
 			System.out.println("Sorry:(\nCould not catch the quote!\nPlease try again!");
 			return;
 		}
+		
+		//If existing quotes are similar to the user provided quote, check if one
+		//of the similar quotes is exactly the same. If the quote already exists
+		//notify the user and don't add quote and author.
 		QuoteList searchRes = quoteList.search(quote, QuoteList.SearchTextVal);
 		if (searchRes.getSize() != 0) {
 			Quote quoteTmp;
 			for (int i = 0; i < searchRes.getSize(); i++) {
+				
+				//If the quote already exists, regardless of case, don't add the quote.
 				quoteTmp = searchRes.getQuote(i);
-				if (quoteTmp.getQuoteText().equals(quote)) {
-					System.out.println("The quote is already exist");
+				if ( quoteTmp.getQuoteText().equalsIgnoreCase(quote) ) {
+					System.out.println("The quote already exist");
 					return;
 				}
 			}
-		}
-
-		if (author == null || author == "")
+		}//end of if statement
+		
+		//check if author was left blank, or if it is only made of spaces.
+		//when either condition is true, set author to Unknown
+		if (author.equals(null) || author.trim().equals("") )
 			author = "Unknown";
+
 
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -206,7 +203,7 @@ public class quoteserverCLI {
 			Document doc = docBuilder.parse("quotes.xml");
 
 			// Get the root element
-			Node quote_list = doc.getFirstChild();
+			//Node quote_list = doc.getFirstChild();
 
 			// Get the quote-list element by tag name directly
 			Node attQuote_list = doc.getElementsByTagName("quote-list").item(0);
@@ -231,7 +228,7 @@ public class quoteserverCLI {
 			StreamResult result = new StreamResult(new File("quotes.xml"));
 			transformer.transform(source, result);
 
-			System.out.println("\nThe new quote was added to the list.\n");
+			System.out.println("\nThe new quote was added to the list.");
 
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
@@ -245,6 +242,8 @@ public class quoteserverCLI {
 		// read quotes.xml
 		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
 		quoteList = parser.getQuoteList();
+		
+
 	}
 
 	/**
@@ -303,7 +302,7 @@ public class quoteserverCLI {
 				tempList.add("(blank)");
 			}
 		}
-
+		System.out.println("_______________________________________________________");
 		System.out.print(String.format("%-40s%s", "MAIN MENU", "RECENT SEARCHES") + "\n"
 				+ String.format("%-40s%s%s", "1. Another random quote", "7. ", tempList.get(0)) + "\n"
 				+ String.format("%-40s%s%s", "2. Search a quote by author", "8. ", tempList.get(1)) + "\n"
