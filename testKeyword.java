@@ -10,14 +10,15 @@ public class testKeyword {
 	QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
 	QuoteList quoteList = parser.getQuoteList();
 	
-	@Test 
+	//test 1
+	@Test
 	public void testKeywordAdd() {
 		String quote = "Today is Monday";
 		String author = "Amilcar Martinez";
 		ArrayList<String> keywords = new ArrayList<String>();
 		keywords.add("week");
 		keywords.add("day");
-		appendQuote(quote,author,keywords);
+		quoteserverCLI.appendQuote(quote,author,keywords);
 	}
 
 }
