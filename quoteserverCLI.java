@@ -29,19 +29,25 @@ import org.xml.sax.SAXException;
 public class quoteserverCLI {
 
 	// quoteList will hold the list of quotes read in from quotes.xml
-	private static QuoteList quoteList;
+//	private static QuoteList quoteList;
 	// searchList will hold the last five Strings that have been searched
 	private static ArrayList<String> searchList = new ArrayList<String>();
 
+	static QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+	// Loads all quotes in quotes.xlm into quoteList
+	protected static QuoteList quoteList = parser.getQuoteList();
+	
 	public static void main(String[] args) {
 
 		Scanner s = new Scanner(System.in);
 		Scanner menuInput = new Scanner(System.in);
 		String searchText = null;
-
-		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
-		// Loads all quotes in quotes.xlm into quoteList
-		quoteList = parser.getQuoteList();
+		ArrayList<String> tempKeywords = new ArrayList<String>();
+		tempKeywords.add("keyword");
+		
+//		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+//		// Loads all quotes in quotes.xlm into quoteList
+//		quoteList = parser.getQuoteList();
 		// Get random quote and print it
 		Quote randomQuote = quoteList.getRandomQuote();
 		printRandomQuote(randomQuote);
@@ -81,7 +87,7 @@ public class quoteserverCLI {
 			case 5: // user input is 5, prompt user to enter quote and author, append to list if
 					// the quote doesn't already exist.
 				System.out.println("Enter the quote and author separately.");
-				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"));
+				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"), tempKeywords );
 				break;
 
 			case 6: // user input is 6, exit the program
@@ -166,7 +172,7 @@ public class quoteserverCLI {
 	 *            String type, user input author's name of quote, if it is null, the
 	 *            unknown author will be added to list.
 	 */
-	private static void appendQuote(String quote, String author) {
+	protected static void appendQuote(String quote, String author, ArrayList<String> keywords) {
 		
 		//check if user didn't enter a quote, or entered all spaces
 		if (quote.equals(null) || quote.trim().equals("")) {
