@@ -17,6 +17,7 @@ public class testKeyword {
     	keywords = new ArrayList<String>();
     }
     
+    //Test 1
     @Test
     public void testKeywordAdd() {
         String quote = "Today is Monday";
@@ -27,6 +28,7 @@ public class testKeyword {
         quoteserverCLI.appendQuote(quote,author,keywords);
     }
     
+    //Test 2
     @Test
     public void testQuoteKeyword() {
        // ArrayList<String> keywords = new ArrayList<String>();
@@ -35,6 +37,7 @@ public class testKeyword {
         Quote quote = new Quote("author", "quote", keywords);
     }
     
+    //Test 3
     @Test (expected = InvalidParameterException.class)
     /*
      *  Tests to see if the quote class will throw an InvalidParameterException 
@@ -45,5 +48,25 @@ public class testKeyword {
     		keywords.add("Keyword"+x);
     	Quote q = new Quote("Test Author","Test Quote",keywords);
     }
+    
+	//Test 4
+    @Test	
+	public void testKeywordSearchNotEmpty() {
+		QuoteList list = new QuoteList();
+		
+		//add quotes to quotelist
+		String quote = "Today is Monday";
+		String author = "Amilcar Martinez";
+		ArrayList<String> keywords1 = new ArrayList<String>();
+		keywords1.add("week");
+		keywords1.add("day");
+		Quote quote1 = new Quote(author,quote, keywords1);
+		
+		//add quote to quoteList
+		list.setQuote( quote1 );
+		
+		//search for quotes with keyword
+		assertNotEquals(list.search("week", QuoteList.SearchKeyword).getSize(), 0);
+	}
 }
 
