@@ -33,6 +33,7 @@ public class Quote {
 			throw new InvalidParameterException("Quote can have a max of 10 keywords");
 	}
 
+
 	// Getter and setter for author
 	public String getAuthor() {
 		return author;
@@ -42,16 +43,9 @@ public class Quote {
 		this.author = author;
 	}
 
-	// Getter and setter for quoteText
-	public String getQuoteText() {
-		return quoteText;
-	}
+	
 
-	public void setQuoteText(String quoteText) {
-		this.quoteText = quoteText;
-	}
-
-	public ArrayList<String> getKeyword() {
+	public ArrayList<String> getKeywords() {
 		return keywords;
 	}
 
@@ -60,4 +54,19 @@ public class Quote {
 	public String toString() {
 		return "Quote {" + "author='" + author + '\'' + ", quoteText='" + quoteText + '\'' + '}';
 	}
+   // Getter and setter for quoteText
+   public String getQuoteText ()
+   {
+      return quoteText;
+   }
+   public void setQuoteText (String quoteText)
+   {
+      this.quoteText = quoteText;
+   }
+   
+
+   public void setKeywords(ArrayList<String> keywords){
+	   this.keywords = keywords;
+   }
+
 }

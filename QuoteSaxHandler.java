@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.ArrayList;
@@ -16,12 +18,14 @@ public class QuoteSaxHandler extends DefaultHandler {
 	private QuoteList quoteList = new QuoteList();
 	private Quote quoteTmp = null; // temporary Quote
 	private String currentElement = null; // current element name
+	private ArrayList<String> keywordTemp = null;
 
 	// Node names in XML file
 	private final String QuoteListElem = "quote-list";
 	private final String QuoteElem = "quote";
 	private final String QuoteAuthorElem = "author";
 	private final String QuoteTextElem = "quote-text";
+	private final String QuoteKeywordElem = "keyword";
 
 	public QuoteSaxHandler() {
 		super();
@@ -48,16 +52,20 @@ public class QuoteSaxHandler extends DefaultHandler {
 		} else if (qName.equalsIgnoreCase(QuoteElem)) {
 			currentElement = QuoteElem;
 			quoteTmp = new Quote();
+			keywordTemp = new ArrayList<String>();
 		} else if (qName.equalsIgnoreCase(QuoteAuthorElem)) {
 			currentElement = QuoteAuthorElem;
 		} else if (qName.equalsIgnoreCase(QuoteTextElem)) {
 			currentElement = QuoteTextElem;
-		} 
+		} else if (qName.equalsIgnoreCase(QuoteKeywordElem)){
+			currentElement = QuoteKeywordElem;
+		}
 	}
 
 	@Override
 	public void endElement(String uri, String name, String qName) {
 		if (qName.equalsIgnoreCase(QuoteElem)) {
+			quoteTmp.setKeywords(keywordTemp);
 			quoteList.setQuote(quoteTmp);
 			quoteTmp = null;
 		}
@@ -71,7 +79,10 @@ public class QuoteSaxHandler extends DefaultHandler {
 				quoteTmp.setQuoteText(value);
 			} else if (currentElement.equalsIgnoreCase(QuoteAuthorElem)) {
 				quoteTmp.setAuthor(value);
-			} 
+
+			} else if (currentElement.equalsIgnoreCase(QuoteKeywordElem)){
+				keywordTemp.add(value);
+			}
 		}
 	}
 

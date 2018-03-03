@@ -61,10 +61,12 @@ public class TestKeyword {
 		// add quotes to quotelist
 		String quote = "Today is Monday";
 		String author = "Amilcar Martinez";
-		ArrayList<String> keywords1 = new ArrayList<String>();
-		keywords1.add("week");
-		keywords1.add("day");
-		Quote quote1 = new Quote(author, quote, keywords1);
+
+		
+		keywords.add("week");
+		keywords.add("day");
+		Quote quote1 = new Quote(author,quote, keywords);
+
 
 		// add quote to quoteList
 		list.setQuote(quote1);
@@ -73,4 +75,86 @@ public class TestKeyword {
 		assertNotEquals(list.search("week", QuoteList.SearchKeyword).getSize(), 0);
 	}
 
+
+    
+    //Test 6
+    @Test
+    public void testKeywordSearchCheckQuanity()
+    {
+    	QuoteList list = new QuoteList();
+		
+		//first quote
+		String quote1 = "Today is Monday";
+		String author1 = "Amilcar Martinez";
+		ArrayList<String> keywords1 = new ArrayList<String>();
+		keywords1.add("week");
+		keywords1.add("day");
+		Quote Quote1 = new Quote(author1, quote1, keywords1);
+		
+		//second quote
+		String quote2 = "Today is Tuesday";
+		String author2 = "Amilcar Martinez";
+		ArrayList<String> keywords2 = new ArrayList<String>();
+		keywords2.add("first");
+		Quote Quote2 = new Quote(author2, quote2, keywords2);
+		
+		//third quote
+		String quote3 = "Today is Wednesday";
+		String author3 = "Amilcar Martinez";
+		ArrayList<String> keywords3 = new ArrayList<String>();
+		keywords3.add("Wednesday");
+		keywords3.add("third");
+		keywords3.add("week");
+		Quote Quote3 = new Quote(author3,quote3, keywords3);
+		
+		//add quote to quoteList
+		list.setQuote( Quote1 );
+		list.setQuote( Quote2 );
+		list.setQuote( Quote3 );
+		
+		//search for quotes with keyword
+
+		assertEquals(list.search("week", QuoteList.SearchKeyword).getSize(), 2);
+    }
+    
+    @Test
+    public void testParseXMLWithKeywords(){
+    	String expectedQuoteText = "I know that you believe you understand what you think I said, but I am not sure you realize that what you heard is not what I meant.";
+    	String expectedAuthor = "Richard Nixon";
+    	keywords.add("believe");
+    	keywords.add("understand");
+        QuoteSaxParser parser = new QuoteSaxParser("testQuotes.xml");
+        quoteList = parser.getQuoteList();
+        assertEquals(1,quoteList.getSize());
+        Quote q = quoteList.getQuote(0);
+        assertTrue(expectedQuoteText.equals(q.getQuoteText()));
+        System.out.println(q.getAuthor());
+        assertTrue(expectedAuthor.equals(q.getAuthor()));
+        ArrayList<String> qArrayList = q.getKeywords();
+        for(int x = 0; x < qArrayList.size();x++){
+        	assertTrue(keywords.contains(qArrayList.get(x)));
+        	keywords.remove(qArrayList.get(x));
+        } 
+    }
+    
+    @Test
+    public void testSearchForAppendedQuote()
+    {
+        String quote = "SWE437 is a fun class.";
+        String author = "Prof. Offutt";
+        //ArrayList<String> keywords = new ArrayList<String>();
+        keywords.add("Monday");
+        keywords.add("Four");
+        quoteserverCLI.appendQuote(quote,author,keywords);
+        
+        //read xml file
+    	QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+    	// Loads all quotes in quotes.xlm into quoteList
+    	QuoteList quotelist = parser.getQuoteList();       quoteList = parser.getQuoteList();
+    	
+    	//search for entered quote
+    	assertEquals ( quotelist.search( "Four", QuoteList.SearchKeyword).getQuote(1).getQuoteText() , 
+    			"SWE437 is a fun class." );
+        
+    }
 }

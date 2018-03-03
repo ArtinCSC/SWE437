@@ -41,68 +41,47 @@ public class QuoteList {
 		return (Quote) quoteArray.get(i);
 	}
 
-	/**
-	 * Search the quotes in the list, based on searchString
-	 * 
-	 * @param searchString
-	 *            String input for search
-	 * @param mode
-	 *            search in the author, quotr, or both
-	 * @return QuoteList containing the search results (may be multiple quotes)
-	 */
-	public QuoteList search(String searchString, int mode) {
-		QuoteList returnQuote = new QuoteList();
-		Quote quote;
-		for (int i = 0; i < quoteArray.size(); i++) {
-			quote = quoteArray.get(i);
-			if (mode == SearchAuthorVal && quote.getAuthor().toLowerCase().indexOf(searchString.toLowerCase()) != -1) { // Found
-																														// a
-																														// matching
-																														// author,
-																														// save
-																														// it
-																														// System.out.println
-																														// ("Matched
-																														// Author
-																														// ");
-				returnQuote.setQuote(quote);
-			} else if (mode == SearchTextVal
-					&& quote.getQuoteText().toLowerCase().indexOf(searchString.toLowerCase()) != -1) { // Found a
-																										// matching
-																										// quote, save
-																										// it
-																										// System.out.println
-																										// ("Matched
-																										// Text ");
-				returnQuote.setQuote(quote);
-			} else if ((mode == SearchBothVal)
-					&& (quote.getAuthor().toLowerCase().indexOf(searchString.toLowerCase()) != -1
-							|| quote.getQuoteText().toLowerCase().indexOf(searchString.toLowerCase()) != -1)) { // Found
-																												// a
-																												// matching
-																												// author
-																												// or
-																												// quote,
-																												// save
-																												// it
-																												// System.out.println
-																												// ("Matched
-																												// Both
-																												// ");
-				returnQuote.setQuote(quote);
-			} else if ((mode == SearchKeyword) && quote.getKeyword().size() != 0) {
 
-				for (int j = 0; j < quote.getKeyword().size(); j++) {
-					if (quote.getKeyword().get(j).equalsIgnoreCase(searchString)) {
-						returnQuote.setQuote(quote);
-						break;
-					}
-				}
-
-			}
-		}
-		return returnQuote;
-	}
+   /**
+    * Search the quotes in the list, based on searchString
+    * @param searchString String input for search
+    * @param mode search in the author, quotr, or both
+    * @return QuoteList containing the search results (may be multiple quotes)
+    */
+   public QuoteList search (String searchString, int mode)
+   {
+      QuoteList returnQuote = new QuoteList();
+      Quote quote;
+      for (int i = 0; i < quoteArray.size(); i++)
+      {
+         quote = quoteArray.get (i);
+         if (mode == SearchAuthorVal && quote.getAuthor().toLowerCase().indexOf (searchString.toLowerCase()) != -1)
+         {  // Found a matching author, save it
+            // System.out.println ("Matched Author ");
+            returnQuote.setQuote (quote);
+         } else if (mode == SearchTextVal && quote.getQuoteText().toLowerCase().indexOf (searchString.toLowerCase()) != -1)
+         {  // Found a matching quote, save it
+            // System.out.println ("Matched Text ");
+            returnQuote.setQuote (quote);
+         } else if ((mode == SearchBothVal) &&
+                    (quote.getAuthor().toLowerCase().indexOf (searchString.toLowerCase()) != -1 ||
+                     quote.getQuoteText().toLowerCase().indexOf (searchString.toLowerCase()) != -1))
+         {  // Found a matching author or quote, save it
+            // System.out.println ("Matched Both ");
+            returnQuote.setQuote (quote);
+         } else if ((mode == SearchKeyword)  && quote.getKeywords().size() != 0 ) {
+        	 
+        	 for(int j = 0; j < quote.getKeywords().size(); j++) {
+        		if( quote.getKeywords().get(j).equalsIgnoreCase(searchString)) {
+        			returnQuote.setQuote(quote);
+        		break;
+        		}
+        	 }
+        	 
+         }
+      }
+      return returnQuote;
+   }
 
 	/**
 	 * Retuen a random quote object from the list.
