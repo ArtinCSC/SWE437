@@ -72,7 +72,5 @@ public class TestKeyword {
 		// search for quotes with keyword
 		assertNotEquals(list.search("week", QuoteList.SearchKeyword).getSize(), 0);
 	}
-	
-	
-	
+
 }

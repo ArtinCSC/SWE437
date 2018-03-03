@@ -1,5 +1,8 @@
 
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.util.ArrayList;
+
 import org.xml.sax.*;
 
 /**
@@ -49,7 +52,7 @@ public class QuoteSaxHandler extends DefaultHandler {
 			currentElement = QuoteAuthorElem;
 		} else if (qName.equalsIgnoreCase(QuoteTextElem)) {
 			currentElement = QuoteTextElem;
-		}
+		} 
 	}
 
 	@Override
@@ -68,9 +71,8 @@ public class QuoteSaxHandler extends DefaultHandler {
 				quoteTmp.setQuoteText(value);
 			} else if (currentElement.equalsIgnoreCase(QuoteAuthorElem)) {
 				quoteTmp.setAuthor(value);
-			}
+			} 
 		}
 	}
 
 }
-
