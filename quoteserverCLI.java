@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,14 +28,14 @@ import org.xml.sax.SAXException;
 public class quoteserverCLI {
 
 	// quoteList will hold the list of quotes read in from quotes.xml
-//	private static QuoteList quoteList;
+	// private static QuoteList quoteList;
 	// searchList will hold the last five Strings that have been searched
 	private static ArrayList<String> searchList = new ArrayList<String>();
 
 	static QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
 	// Loads all quotes in quotes.xlm into quoteList
 	protected static QuoteList quoteList = parser.getQuoteList();
-	
+
 	public static void main(String[] args) {
 
 		Scanner s = new Scanner(System.in);
@@ -44,15 +43,15 @@ public class quoteserverCLI {
 		String searchText = null;
 		ArrayList<String> tempKeywords = new ArrayList<String>();
 		tempKeywords.add("keyword");
-		
-//		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
-//		// Loads all quotes in quotes.xlm into quoteList
-//		quoteList = parser.getQuoteList();
+
+		// QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+		// // Loads all quotes in quotes.xlm into quoteList
+		// quoteList = parser.getQuoteList();
 		// Get random quote and print it
 		Quote randomQuote = quoteList.getRandomQuote();
 		printRandomQuote(randomQuote);
 
-		// Main while loop, program runs until user triggers program Exit. 
+		// Main while loop, program runs until user triggers program Exit.
 		// See Switch statement.
 		while (true) {
 			// Print the main menu and prompt for user input
@@ -64,7 +63,7 @@ public class quoteserverCLI {
 				randomQuote = quoteList.getRandomQuote();
 				printRandomQuote(randomQuote);
 				break;
-				
+
 			case 2: // user input is 2, prompt user for search string, search by author
 				searchText = helper(s, "Enter the author's name to search:\n");
 				maintainSearchList(searchText);
@@ -87,7 +86,7 @@ public class quoteserverCLI {
 			case 5: // user input is 5, prompt user to enter quote and author, append to list if
 					// the quote doesn't already exist.
 				System.out.println("Enter the quote and author separately.");
-				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"), tempKeywords );
+				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"), tempKeywords);
 				break;
 
 			case 6: // user input is 6, exit the program
@@ -126,9 +125,10 @@ public class quoteserverCLI {
 	 */
 	private static void printRandomQuote(Quote quote) {
 
-		System.out.println("         The GMU Quote Generator" + "\n_______________________________________________________");
+		System.out.println(
+				"         The GMU Quote Generator" + "\n_______________________________________________________");
 		System.out.println("Random quote of the day\n");
-		System.out.println( quote.getQuoteText() );
+		System.out.println(quote.getQuoteText());
 		System.out.println("                  " + quote.getAuthor());
 	}
 
@@ -173,35 +173,34 @@ public class quoteserverCLI {
 	 *            unknown author will be added to list.
 	 */
 	protected static void appendQuote(String quote, String author, ArrayList<String> keywords) {
-		
-		//check if user didn't enter a quote, or entered all spaces
+
+		// check if user didn't enter a quote, or entered all spaces
 		if (quote.equals(null) || quote.trim().equals("")) {
 			System.out.println("Sorry:(\nCould not catch the quote!\nPlease try again!");
 			return;
 		}
-		
-		//If existing quotes are similar to the user provided quote, check if one
-		//of the similar quotes is exactly the same. If the quote already exists
-		//notify the user and don't add quote and author.
+
+		// If existing quotes are similar to the user provided quote, check if one
+		// of the similar quotes is exactly the same. If the quote already exists
+		// notify the user and don't add quote and author.
 		QuoteList searchRes = quoteList.search(quote, QuoteList.SearchTextVal);
 		if (searchRes.getSize() != 0) {
 			Quote quoteTmp;
 			for (int i = 0; i < searchRes.getSize(); i++) {
-				
-				//If the quote already exists, regardless of case, don't add the quote.
+
+				// If the quote already exists, regardless of case, don't add the quote.
 				quoteTmp = searchRes.getQuote(i);
-				if ( quoteTmp.getQuoteText().equalsIgnoreCase(quote) ) {
+				if (quoteTmp.getQuoteText().equalsIgnoreCase(quote)) {
 					System.out.println("The quote already exist");
 					return;
 				}
 			}
-		}//end of if statement
-		
-		//check if author was left blank, or if it is only made of spaces.
-		//when either condition is true, set author to Unknown
-		if (author.equals(null) || author.trim().equals("") )
-			author = "Unknown";
+		} // end of if statement
 
+		// check if author was left blank, or if it is only made of spaces.
+		// when either condition is true, set author to Unknown
+		if (author.equals(null) || author.trim().equals(""))
+			author = "Unknown";
 
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -209,7 +208,7 @@ public class quoteserverCLI {
 			Document doc = docBuilder.parse("quotes.xml");
 
 			// Get the root element
-			//Node quote_list = doc.getFirstChild();
+			// Node quote_list = doc.getFirstChild();
 
 			// Get the quote-list element by tag name directly
 			Node attQuote_list = doc.getElementsByTagName("quote-list").item(0);
@@ -224,6 +223,11 @@ public class quoteserverCLI {
 			Element quote_author = doc.createElement("author");
 			quote_author.appendChild(doc.createTextNode(author));
 			attQuote.appendChild(quote_author);
+
+			// // append a new node keywords to quote attribute
+			// Element keywords = doc.createElement("keywords");
+			// keywords.appendChild(doc.createTextNode(author));
+			// attQuote.appendChild(keywords);
 
 			attQuote_list.appendChild(attQuote);
 
@@ -248,7 +252,6 @@ public class quoteserverCLI {
 		// read quotes.xml
 		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
 		quoteList = parser.getQuoteList();
-		
 
 	}
 

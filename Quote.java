@@ -1,4 +1,3 @@
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 /**
@@ -32,8 +31,6 @@ public class Quote
       this.author = author;
       this.quoteText = quoteText;
       this.keywords = keywords;
-      if(this.keywords.size() > 10)
-    	  throw new InvalidParameterException("Quote can have a max of 10 keywords");
    }
    
    // Getter and setter for author
@@ -54,6 +51,10 @@ public class Quote
    public void setQuoteText (String quoteText)
    {
       this.quoteText = quoteText;
+   }
+   
+   public ArrayList<String> getKeyword() {
+	   return keywords;
    }
 
    @Override
