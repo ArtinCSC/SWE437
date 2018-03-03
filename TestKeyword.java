@@ -1,4 +1,6 @@
-
+/*
+ * 	Written By: Arin Melakian, Vincent Liu, Amilcar Martinez
+ */
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
@@ -7,7 +9,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 
-public class testKeyword {
+public class TestKeyword {
     private QuoteList quoteList;
     private ArrayList<String> keywords;
     @Before
