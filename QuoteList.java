@@ -4,48 +4,43 @@ import java.util.Random;
 
 /**
  * List of all the quotes.
- * @author Mongkoldech Rajapakdee & Jeff Offutt
- *       Date: Nov 2009
+ * 
+ * @author Mongkoldech Rajapakdee & Jeff Offutt Date: Nov 2009
  */
-public class QuoteList
-{
-   private ArrayList<Quote> quoteArray;
+public class QuoteList {
+	private ArrayList<Quote> quoteArray;
 
-   // These constants are used in the servlet
-   /* package */ static final int SearchAuthorVal = 0;
-   /* package */ static final int SearchTextVal   = 1;
-   /* package */ static final int SearchBothVal   = 2;
-   /* package */ static final int SearchKeyword   = 3;
+	// These constants are used in the servlet
+	/* package */ static final int SearchAuthorVal = 0;
+	/* package */ static final int SearchTextVal = 1;
+	/* package */ static final int SearchBothVal = 2;
+	/* package */ static final int SearchKeyword = 3;
 
+	// For returning a random quote
+	private Random randomGen;
+	private final int seed = 19580427;
 
-   // For returning a random quote
-   private Random randomGen;
-   private final int seed = 19580427;
+	// Default constructor creates a new list and initializes the random seed
+	public QuoteList() {
+		this.quoteArray = new ArrayList<Quote>();
+		randomGen = new Random(seed);
+	}
 
-   // Default constructor creates a new list and initializes the random seed
-   public QuoteList()
-   {
-      this.quoteArray = new ArrayList<Quote>();
-      randomGen = new Random (seed);
-   }
+	// Called when a quote is found, added to the array
+	public void setQuote(Quote q) {
+		quoteArray.add(q);
+	}
 
-   // Called when a quote is found, added to the array
-   public void setQuote (Quote q)
-   {
-      quoteArray.add (q);
-   }
+	// Current size of the quote list
+	public int getSize() {
+		return quoteArray.size();
+	}
 
-   // Current size of the quote list
-   public int getSize()
-   {
-      return quoteArray.size();
-   }
+	// Returns the ith quote from the list
+	public Quote getQuote(int i) {
+		return (Quote) quoteArray.get(i);
+	}
 
-   // Returns the ith quote from the list
-   public Quote getQuote (int i)
-   {
-      return (Quote) quoteArray.get (i);
-   }
 
    /**
     * Search the quotes in the list, based on searchString
@@ -74,10 +69,10 @@ public class QuoteList
          {  // Found a matching author or quote, save it
             // System.out.println ("Matched Both ");
             returnQuote.setQuote (quote);
-         } else if ((mode == SearchKeyword)  && quote.getKeyword().size() != 0 ) {
+         } else if ((mode == SearchKeyword)  && quote.getKeywords().size() != 0 ) {
         	 
-        	 for(int j = 0; j < quote.getKeyword().size(); j++) {
-        		if( quote.getKeyword().get(j).equalsIgnoreCase(searchString)) {
+        	 for(int j = 0; j < quote.getKeywords().size(); j++) {
+        		if( quote.getKeywords().get(j).equalsIgnoreCase(searchString)) {
         			returnQuote.setQuote(quote);
         		break;
         		}
@@ -88,13 +83,12 @@ public class QuoteList
       return returnQuote;
    }
 
-   /**
-    * Retuen a random quote object from the list.
-    * @return a random Quote
-    */
-   public Quote getRandomQuote ()
-   {
-      return quoteArray.get (randomGen.nextInt (quoteArray.size()));
-   }
+	/**
+	 * Retuen a random quote object from the list.
+	 * 
+	 * @return a random Quote
+	 */
+	public Quote getRandomQuote() {
+		return quoteArray.get(randomGen.nextInt(quoteArray.size()));
+	}
 }
-

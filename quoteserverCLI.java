@@ -251,15 +251,15 @@ public class quoteserverCLI {
 			quote_author.appendChild(doc.createTextNode(author));
 			attQuote.appendChild(quote_author);
 
-			if(keywords.size() > 0)
-			for(int k = 0; k < keywords.size(); k++) {
-				String key = keywords.get(k);
-			 // append a new node keywords to quote attribute
-			 Element keyword = doc.createElement("keywords");
-			 keyword.appendChild(doc.createTextNode(key));
-			 attQuote.appendChild(keyword);
-			}
-			
+			if (keywords.size() > 0)
+				for (int k = 0; k < keywords.size(); k++) {
+					String key = keywords.get(k);
+					// append a new node keywords to quote attribute
+					Element keyword = doc.createElement("keyword");
+					keyword.appendChild(doc.createTextNode(key));
+					attQuote.appendChild(keyword);
+				}
+
 			attQuote_list.appendChild(attQuote);
 
 			// write the content into xml file
