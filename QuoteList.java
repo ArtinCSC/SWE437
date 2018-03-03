@@ -74,10 +74,10 @@ public class QuoteList
          {  // Found a matching author or quote, save it
             // System.out.println ("Matched Both ");
             returnQuote.setQuote (quote);
-         } else if ((mode == SearchKeyword)  && quote.getKeyword().size() != 0 ) {
+         } else if ((mode == SearchKeyword)  && quote.getKeywords().size() != 0 ) {
         	 
-        	 for(int j = 0; j < quote.getKeyword().size(); j++) {
-        		if( quote.getKeyword().get(j).equalsIgnoreCase(searchString)) {
+        	 for(int j = 0; j < quote.getKeywords().size(); j++) {
+        		if( quote.getKeywords().get(j).equalsIgnoreCase(searchString)) {
         			returnQuote.setQuote(quote);
         		break;
         		}
