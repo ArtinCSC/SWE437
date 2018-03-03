@@ -115,11 +115,12 @@ public class quoteserverCLI {
 			System.out.println();
 
 		} // end while loop
+		
 	} // end of main
 	
 	private static ArrayList<String> helperEnterKeywords()
 	{
-		Scanner input = new Scanner(System.in);
+		Scanner inputNumKeywords = new Scanner(System.in);
 		ArrayList<String> tempStringList = new ArrayList<String>();
 		String tempString;
 		int numQuotes;
@@ -128,7 +129,7 @@ public class quoteserverCLI {
 		//If invalid input entered, keep prompting
 		do{
 			System.out.print("How many keywords do you want to enter (0-10): ");
-			numQuotes = input.nextInt();
+			numQuotes = inputNumKeywords.nextInt();
 			if( numQuotes < 0 || numQuotes > 10){
 				System.out.println("Enter a number between 0 and 10. Try again");
 				keepAsking  = true;
@@ -136,11 +137,14 @@ public class quoteserverCLI {
 				keepAsking = false;
 		}while( keepAsking );
 		//prompt user to enter keywords.
+		
+		Scanner newUserInput = new Scanner(System.in);
 		for(int i = 0; i < numQuotes ; i++){
 		
-			tempString = helper(input, "Enter keyword:");
+			tempString = helper(newUserInput, "Enter keyword:");
 			tempStringList.add(tempString);
 		}
+
 		return tempStringList;
 	}
 	
