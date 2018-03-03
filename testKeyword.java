@@ -72,9 +72,7 @@ public class TestKeyword {
 		// search for quotes with keyword
 		assertNotEquals(list.search("week", QuoteList.SearchKeyword).getSize(), 0);
 	}
-//<<<<<<< HEAD
-    
-    
+
     //Test 6
     @Test
     public void testKeywordSearchCheckQuanity()
@@ -118,26 +116,23 @@ public class TestKeyword {
     @Test
     public void testSearchForAppendedQuote()
     {
-        String quote = "SWE437 is a fun class.";
+        String quote = "SWE437 is a fun class. Second Test.";
         String author = "Prof. Offutt";
         //ArrayList<String> keywords = new ArrayList<String>();
         keywords.add("Monday");
-        keywords.add("Four");
+        keywords.add("Four545");
         quoteserverCLI.appendQuote(quote,author,keywords);
         
         //read xml file
     	QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
     	// Loads all quotes in quotes.xlm into quoteList
-    	QuoteList quotelist = parser.getQuoteList();       quoteList = parser.getQuoteList();
+    	QuoteList quotelist = parser.getQuoteList();       
+    	quotelist = parser.getQuoteList();
     	
     	//search for entered quote
-    	assertEquals ( quotelist.search( "Four", QuoteList.SearchKeyword).getQuote(1).getQuoteText() , 
-    			"SWE437 is a fun class." );
+    	assertEquals ( quotelist.search( "Four545", QuoteList.SearchKeyword).getQuote(1).getQuoteText() , 
+    			"SWE437 is a fun class. Second Test." );
         
     }
-//=======
-//	
-//	
-//	
-//>>>>>>> abaabb7fcee4a2943d6141d8604a5f80811b9c4f
+
 }

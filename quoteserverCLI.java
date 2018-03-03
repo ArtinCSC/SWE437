@@ -86,7 +86,7 @@ public class quoteserverCLI {
 			case 5: // user input is 5, prompt user to enter quote and author, append to list if
 					// the quote doesn't already exist.
 				System.out.println("Enter the quote and author separately.");
-				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"), tempKeywords);
+				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"), helperEnterKeywords() );
 				break;
 
 			case 6: // user input is 6, exit the program
@@ -116,7 +116,34 @@ public class quoteserverCLI {
 
 		} // end while loop
 	} // end of main
-
+	
+	private static ArrayList<String> helperEnterKeywords()
+	{
+		Scanner input = new Scanner(System.in);
+		ArrayList<String> tempStringList = new ArrayList<String>();
+		String tempString;
+		int numQuotes;
+		boolean keepAsking;
+		//prompt user for the number of keywords that need to be entered.
+		//If invalid input entered, keep prompting
+		do{
+			System.out.print("How many keywords do you want to enter (0-10): ");
+			numQuotes = input.nextInt();
+			if( numQuotes < 0 || numQuotes > 10){
+				System.out.println("Enter a number between 0 and 10. Try again");
+				keepAsking  = true;
+			}else
+				keepAsking = false;
+		}while( keepAsking );
+		//prompt user to enter keywords.
+		for(int i = 0; i < numQuotes ; i++){
+		
+			tempString = helper(input, "Enter keyword:");
+			tempStringList.add(tempString);
+		}
+		return tempStringList;
+	}
+	
 	/**
 	 * @purpose To print the program banner and the random quote passed as argument.
 	 * 
