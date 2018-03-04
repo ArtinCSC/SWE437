@@ -15,6 +15,8 @@ public class QuoteList {
 	/* package */ static final int SearchTextVal = 1;
 	/* package */ static final int SearchBothVal = 2;
 	/* package */ static final int SearchKeyword = 3;
+	/* package */ static final int SearchThreeval = 4;
+
 
 	// For returning a random quote
 	private Random randomGen;
@@ -78,6 +80,17 @@ public class QuoteList {
         		}
         	 }
         	 
+         } else if (mode == SearchThreeval &&
+                 (quote.getAuthor().toLowerCase().indexOf (searchString.toLowerCase()) != -1 ||
+                 quote.getQuoteText().toLowerCase().indexOf (searchString.toLowerCase()) != -1 ||
+                 quote.getKeywords().size() != 0 ) ) {
+        	
+        	 for(int j = 0; j < quote.getKeywords().size(); j++) {
+         		if( quote.getKeywords().get(j).equalsIgnoreCase(searchString)) {
+         			returnQuote.setQuote(quote);
+         		break;
+         		}
+        	 }
          }
       }
       return returnQuote;
