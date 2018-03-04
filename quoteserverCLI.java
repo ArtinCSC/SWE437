@@ -67,44 +67,51 @@ public class quoteserverCLI {
 			case 2: // user input is 2, prompt user for search string, search by author
 				searchText = helper(s, "Enter the author's name to search:\n");
 				maintainSearchList(searchText);
-				search(searchText, 2);
+				search(searchText, QuoteList.SearchAuthorVal);
 				break;
 
 			case 3: // user input is 3, prompt user for search string, search by quote
 				searchText = helper(s, "Enter your quote to search:\n");
 				maintainSearchList(searchText);
-				search(searchText, 3);
+				search(searchText, QuoteList.SearchTextVal);
 				break;
 
 			case 4: // user input is 4, prompt user for search string, search by both quote and
 					// author
 				searchText = helper(s, "Enter your quote/author's name to search:\n");
 				maintainSearchList(searchText);
-				search(searchText, 4);
+				search(searchText, QuoteList.SearchBothVal);
 				break;
-
-			case 5: // user input is 5, prompt user to enter quote and author, append to list if
+				
+			case 5: // user input is 5, prompt user for search string, search Keywords
+				
+				searchText = helper(s, "Enter the Keyword:\n");
+				maintainSearchList(searchText);
+				search(searchText, QuoteList.SearchKeyword );
+				break;
+				
+			case 6: // user input is 6, prompt user to enter quote and author, append to list if
 					// the quote doesn't already exist.
 				System.out.println("Enter the quote and author separately.");
 				appendQuote(helper(s, "Enter the quote:"), helper(s, "Enter the author:"), helperEnterKeywords() );
 				break;
 
-			case 6: // user input is 6, exit the program
+			case 7: // user input is 7, exit the program
 				System.exit(0);
 				break;
-			case 7:// user input 7 - 10 corresponds to the "RECENT SEARCH" menu. Take the recent
+			case 8:// user input 8 - 12 corresponds to the "RECENT SEARCH" menu. Take the recent
 					// search the user selected and display its results again.
-			case 8:
 			case 9:
 			case 10:
 			case 11:
-				if ((input - 7) < searchList.size())
+			case 12:
+				if ((input - 8) < searchList.size())
 				// Subtract 7 from input, its the actual location of the recent search
 				// selected by the user in recent searches string list.
 				// If the actual location selected exists, print it, else print error.
 				{
-					search(searchList.get(input - 7), 4);
-					maintainSearchList(searchList.get(input - 7));
+					search(searchList.get(input - 8), 4);
+					maintainSearchList(searchList.get(input - 8));
 				} else {
 					System.out.println("Invalid selection, empty search string.");
 				}
@@ -348,12 +355,13 @@ public class quoteserverCLI {
 		}
 		System.out.println("_______________________________________________________");
 		System.out.print(String.format("%-40s%s", "MAIN MENU", "RECENT SEARCHES") + "\n"
-				+ String.format("%-40s%s%s", "1. Another random quote", "7. ", tempList.get(0)) + "\n"
-				+ String.format("%-40s%s%s", "2. Search a quote by author", "8. ", tempList.get(1)) + "\n"
-				+ String.format("%-40s%s%s", "3. Search a quote by quote", "9. ", tempList.get(2)) + "\n"
-				+ String.format("%-40s%s%s", "4. Search a quote by both", "10. ", tempList.get(3)) + "\n"
-				+ String.format("%-40s%s%s", "5. Add a quote", "11. ", tempList.get(4)) + "\n"
-				+ String.format("%-40s%s", "6. Exit ", " ") + "\n" + ">> ");
+				+ String.format("%-40s%s%s", "1. Another random quote", "8. ", tempList.get(0)) + "\n"
+				+ String.format("%-40s%s%s", "2. Search a quote by author", "9. ", tempList.get(1)) + "\n"
+				+ String.format("%-40s%s%s", "3. Search a quote by quote", "10. ", tempList.get(2)) + "\n"
+				+ String.format("%-40s%s%s", "4. Search a quote by both", "11. ", tempList.get(3)) + "\n"
+				+ String.format("%-40s%s%s", "5. Search by Keyword", "12. ", tempList.get(4)) + "\n"
+				+ String.format("%-40s", "6. Add a quote") + "\n"
+				+ String.format("%-40s%s", "7. Exit ", " ") + "\n" + ">> ");
 	}
 
 }
