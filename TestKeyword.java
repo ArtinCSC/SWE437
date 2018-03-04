@@ -167,12 +167,11 @@ public class TestKeyword {
         
         //read xml file
     	QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
-    	// Loads all quotes in quotes.xlm into quoteList
-    	QuoteList quotelist = parser.getQuoteList();       
-    	quotelist = parser.getQuoteList();
+    	// Loads all quotes in quotes.xml into quoteList
+    	quoteList = parser.getQuoteList();
     	
     	//search for entered quote
-    	assertEquals ( quotelist.search( "Four545", QuoteList.SearchKeyword).getQuote(1).getQuoteText() , 
+    	assertEquals ( quoteList.search( "Four545", QuoteList.SearchKeyword).getQuote(0).getQuoteText() ,
     			"SWE437 is a fun class. Second Test." );
         
     }
