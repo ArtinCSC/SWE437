@@ -309,16 +309,20 @@ public class quoteserverCLI {
 	private static void search(String searchText, int searchScopeInt) {
 
 		if (searchText != null && !searchText.equals("")) { // Received a search request
-			switch (searchScopeInt) {
-			case 2:
-				searchScopeInt = QuoteList.SearchAuthorVal;
-				break;
-			case 3:
-				searchScopeInt = QuoteList.SearchTextVal;
-				break;
-			default:
-				searchScopeInt = QuoteList.SearchBothVal; // Default
-			} // end of switch statement
+//			switch (searchScopeInt) {
+//			case 2:
+//				searchScopeInt = QuoteList.SearchAuthorVal;
+//				break;
+//			case 3:
+//				searchScopeInt = QuoteList.SearchTextVal;
+//				break;
+//			case 4:
+//				searchScopeInt = QuoteList.SearchBothVal; 
+//				break;
+//			case 5:
+//				searchScopeInt = QuoteList.SearchKeyword;
+//				break;
+//			} // end of switch statement
 
 			QuoteList searchRes = quoteList.search(searchText, searchScopeInt);
 			Quote quoteTmp;
