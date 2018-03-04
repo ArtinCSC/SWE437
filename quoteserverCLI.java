@@ -31,8 +31,8 @@ public class quoteserverCLI {
 	// private static QuoteList quoteList;
 	// searchList will hold the last five Strings that have been searched
 	private static ArrayList<String> searchList = new ArrayList<String>();
-
-	static QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+	private static String quoteFileName = "quotes.xml";
+	private static QuoteSaxParser parser = new QuoteSaxParser(quoteFileName);
 	// Loads all quotes in quotes.xlm into quoteList
 	protected static QuoteList quoteList = parser.getQuoteList();
 
@@ -44,7 +44,7 @@ public class quoteserverCLI {
 		ArrayList<String> tempKeywords = new ArrayList<String>();
 		tempKeywords.add("keyword");
 
-		// QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+		// QuoteSaxParser parser = new QuoteSaxParser(quoteFileName);
 		// // Loads all quotes in quotes.xlm into quoteList
 		// quoteList = parser.getQuoteList();
 		// Get random quote and print it
@@ -243,22 +243,22 @@ public class quoteserverCLI {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse("quotes.xml");
+			Document doc = docBuilder.parse(quoteFileName);
 
 			// Get the root element
 			// Node quote_list = doc.getFirstChild();
 
 			// Get the quote-list element by tag name directly
-			Node attQuote_list = doc.getElementsByTagName("quote-list").item(0);
-			Element attQuote = doc.createElement("quote");
+			Node attQuote_list = doc.getElementsByTagName(QuoteSaxHandler.QuoteListElem).item(0);
+			Element attQuote = doc.createElement(QuoteSaxHandler.QuoteElem);
 
 			// append a new node (quote) to quote attribute
-			Element quote_text = doc.createElement("quote-text");
+			Element quote_text = doc.createElement(QuoteSaxHandler.QuoteTextElem);
 			quote_text.appendChild(doc.createTextNode(quote));
 			attQuote.appendChild(quote_text);
 
 			// append a new node (author) to quote attribute
-			Element quote_author = doc.createElement("author");
+			Element quote_author = doc.createElement(QuoteSaxHandler.QuoteAuthorElem);
 			quote_author.appendChild(doc.createTextNode(author));
 			attQuote.appendChild(quote_author);
 
@@ -266,7 +266,7 @@ public class quoteserverCLI {
 				for (int k = 0; k < keywords.size(); k++) {
 					String key = keywords.get(k);
 					// append a new node keywords to quote attribute
-					Element keyword = doc.createElement("keyword");
+					Element keyword = doc.createElement(QuoteSaxHandler.QuoteKeywordElem);
 					keyword.appendChild(doc.createTextNode(key));
 					attQuote.appendChild(keyword);
 				}
@@ -277,7 +277,7 @@ public class quoteserverCLI {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File("quotes.xml"));
+			StreamResult result = new StreamResult(new File(quoteFileName));
 			transformer.transform(source, result);
 
 			System.out.println("\nThe new quote was added to the list.");
@@ -292,7 +292,7 @@ public class quoteserverCLI {
 			sae.printStackTrace();
 		}
 		// read quotes.xml
-		QuoteSaxParser parser = new QuoteSaxParser("quotes.xml");
+		QuoteSaxParser parser = new QuoteSaxParser(quoteFileName);
 		quoteList = parser.getQuoteList();
 
 	}

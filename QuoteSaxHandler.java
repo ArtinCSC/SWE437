@@ -21,11 +21,11 @@ public class QuoteSaxHandler extends DefaultHandler {
 	private ArrayList<String> keywordTemp = null;
 
 	// Node names in XML file
-	private final String QuoteListElem = "quote-list";
-	private final String QuoteElem = "quote";
-	private final String QuoteAuthorElem = "author";
-	private final String QuoteTextElem = "quote-text";
-	private final String QuoteKeywordElem = "keyword";
+	public static final String QuoteListElem = "quote-list";
+	public static final String QuoteElem = "quote";
+	public static final String QuoteAuthorElem = "author";
+	public static final String QuoteTextElem = "quote-text";
+	public static final String QuoteKeywordElem = "keyword";
 
 	public QuoteSaxHandler() {
 		super();
