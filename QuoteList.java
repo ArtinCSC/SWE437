@@ -57,7 +57,9 @@ public class QuoteList {
       for (int i = 0; i < quoteArray.size(); i++)
       {
          quote = quoteArray.get (i);
+         /*
          if (mode == SearchAuthorVal && quote.getAuthor().toLowerCase().indexOf (searchString.toLowerCase()) != -1)
+
          {  // Found a matching author, save it
             // System.out.println ("Matched Author ");
             returnQuote.setQuote (quote);
@@ -92,8 +94,42 @@ public class QuoteList {
          		}
         	 }
          }
+         */
+         if(mode == SearchAuthorVal && checkMatch(true,false,false,quote,searchString))
+         	returnQuote.setQuote(quote);
+         else if(mode == SearchTextVal && checkMatch(false,true,false,quote,searchString))
+         	returnQuote.setQuote(quote);
+         else if(mode == SearchBothVal && checkMatch(true,true,false,quote,searchString))
+         	returnQuote.setQuote(quote);
+         else if(mode == SearchKeyword && checkMatch(false,false,true,quote,searchString))
+         	returnQuote.setQuote(quote);
+         else if(mode == SearchThreeval && checkMatch(true,true,true,quote,searchString))
+         	returnQuote.setQuote(quote);
       }
       return returnQuote;
+   }
+	/**
+	 * Check to see if quote contains searchString within its text, author, or keyword depending on the params
+	 * @param checkAuthor boolean for whether the author should be checked for matches
+	 * @param checkText boolean for whether the text should be checked for matches
+	 * @param checkKeyword boolean for whether the keywords should be checked for matches
+	 * @param quote quote to search
+	 * @param searchString String input for search
+	 * @return boolean of if a match was found
+	 */
+   public boolean checkMatch(boolean checkAuthor, boolean checkText, boolean checkKeyword, Quote quote, String searchString){
+   		if(checkAuthor && quote.getAuthor().toLowerCase().indexOf (searchString.toLowerCase()) != -1)
+   			return true;
+   		else if(checkText && quote.getQuoteText().toLowerCase().indexOf (searchString.toLowerCase()) != -1)
+   			return true;
+   		else if(checkKeyword){
+			for(int j = 0; j < quote.getKeywords().size(); j++) {
+				if( quote.getKeywords().get(j).equalsIgnoreCase(searchString)) {
+					return true;
+				}
+			}
+		}
+		return false;
    }
 
 	/**
