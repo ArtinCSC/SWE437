@@ -42,4 +42,11 @@ public class BBCTests {
 		//WebElement results = driver.findElement(By.tagName("dl"));
 		System.out.println(results.getText());
 	}
+	
+	@Test
+	public void searchTextNoResultSeachScopeQuote()
+	{
+		String searchString = "1------------------4";
+		
+	}
 }
