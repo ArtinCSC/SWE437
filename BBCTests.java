@@ -124,6 +124,29 @@ public class BBCTests {
 		}	
 	}
 	
+		@Test
+	public void searchTextNoneSearchScopeQuote() {
+
+		WebElement element = driver.findElement(By.name("searchText"));
+		element.clear();
+
+		WebElement btt = driver.findElement(By.id("quote"));
+		btt.click();
+		element.submit();
+		WebDriverWait wait = new WebDriverWait(driver, 1);
+
+		WebElement results = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("table")));
+		try {
+			WebElement resultArea = results.findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
+					.findElement(By.tagName("td"));
+			resultArea.findElement(By.tagName("p"));
+			resultArea.findElement(By.tagName("dl"));
+
+		} catch (NoSuchElementException e) {
+			System.out.println(e);
+		}
+	}
+	
 	@Test
 	public void searchTextNoResultSeachScopeQuote()
 	{
