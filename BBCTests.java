@@ -11,11 +11,11 @@ import org.openqa.selenium.*;
 public class BBCTests {
 	
 	private WebDriver driver = null;
-	private String geckoDriverLocation = "C:\\Users\\Wave\\Downloads\\geckodriver-v0.20.0-win64\\geckodriver.exe";
+	//private String geckoDriverLocation = "C:\\Users\\Wave\\Downloads\\geckodriver-v0.20.0-win64\\geckodriver.exe";
 	@Before
 	public void setUp() {
 		if(driver == null){
-			System.setProperty("webdriver.gecko.driver",geckoDriverLocation);
+			//System.setProperty("webdriver.gecko.driver",geckoDriverLocation);
 			driver = new FirefoxDriver();
 		}
 		driver.get("https://cs.gmu.edu:8443/offutt/servlet/quotes.quoteserve");
@@ -83,6 +83,9 @@ public class BBCTests {
 			//System.out.println(results.get(x).getText());
 			assertTrue(results.get(x).getText().toLowerCase().contains(searchTerm));		
 		}
+		
+        //check that the text of the last 'User Search' matches this search
+        assertTrue( checkLastUserSearch( searchTerm ) );
 	}
 	@Test
 	public void searchTextWithResultSearchScopeAuthor() {
@@ -103,7 +106,10 @@ public class BBCTests {
 			fail();
 		for(int x = 0; x < results.size();x++){
 			assertTrue(results.get(x).getText().toLowerCase().contains("software"));	
-		}		
+		}
+		
+        //check that the text of the last 'User Search' matches this search
+        assertTrue( checkLastUserSearch( "software" ) );
 	}
 	
 	@Test
@@ -122,7 +128,9 @@ public class BBCTests {
 		for(int x = 0; x < resultsText.size();x++){
 			assertTrue(resultsText.get(x).getText().toLowerCase().contains("software") || 
 					resultsAuthor.get(x).getText().toLowerCase().contains("software") );	
-		}	
+		}
+        //check that the text of the last 'User Search' matches this search
+        assertTrue( checkLastUserSearch( "software" ) );
 	}
 	
 		@Test
@@ -150,7 +158,7 @@ public class BBCTests {
 	}
 	
 	@Test
-	public void searchTextNoResultSeachScopeQuote()
+	public void searchTextNoResultSearchScopeQuote()
 	{
 		//Expected test results:
 		//		No description list html element. A paragraph element with “did not match any quotes” in its text.
@@ -176,14 +184,26 @@ public class BBCTests {
         		.findElement(By.tagName("td")).findElement(By.tagName("p")).getText();
         assertTrue( secondPElement.equals("Your search - " + searchString + " - did not match any quotes."));
         
+        //check that the text of the last 'User Search' matches this search
+        assertTrue( checkLastUserSearch( searchString ) );
         
 	}
 	
-	public String getLastUserSearchResult(){
-		String lastUserSearchResult = null;
-		WebElement outerTable = driver.findElement( By.tagName("table"));
-		WebElement outerTableData = outerTable.findElement( By.tagName( "tbody")).findElement( By.tagName("tr"));
+	public boolean checkLastUserSearch( String searchText ){
+		/*
+		 * returns a boolean value:
+		 * 		returns true if the last user search text matches parameter searchText,
+		 * 		returns false otherwise.
+		 */
 		
-		return lastUserSearchResult;
+		//get the list of User Searches
+		WebElement outerTable = driver.findElement( By.tagName("table"));
+        List<WebElement> listOfSearches = outerTable.findElements( By.tagName("ol")).get(0).findElements(By.tagName("li"));
+		int numUserSearches = listOfSearches.size();
+		//check for null
+		if( numUserSearches == 0)
+			return false;
+		//return the last user search string
+		return searchText.equals(listOfSearches.get(numUserSearches - 1).getText());
 	}
 }
