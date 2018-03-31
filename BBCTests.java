@@ -145,15 +145,21 @@ public class BBCTests {
 		WebDriverWait wait = new WebDriverWait(driver, 1);
 
 		WebElement results = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("table")));
+		WebElement resultArea = results.findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
+				.findElement(By.tagName("td"));
 		try {
-			WebElement resultArea = results.findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
-					.findElement(By.tagName("td"));
 			resultArea.findElement(By.tagName("p"));
-			resultArea.findElement(By.tagName("dl"));
-
 		} catch (NoSuchElementException e) {
-			System.out.println(e);
+			try {
+			resultArea.findElement(By.tagName("dl"));
+			}
+			catch (NoSuchElementException e2) {
+			 return;
+			}
 		}
+		
+		fail();
+	}
 
 	}
 	
@@ -161,9 +167,9 @@ public class BBCTests {
 	public void searchTextNoResultSearchScopeQuote()
 	{
 		//Expected test results:
-		//		No description list html element. A paragraph element with ìdid not match any quotesî in its text.
+		//		No description list html element. A paragraph element with ‚Äúdid not match any quotes‚Äù in its text.
 		//
-		//		The last link in the ëUser Searchesí lists is the test search, with matching search text and scope in the URL.
+		//		The last link in the ‚ÄòUser Searches‚Äô lists is the test search, with matching search text and scope in the URL.
 
 		String searchString = "1------------------4";
         //Place focus on search text field
