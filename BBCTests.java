@@ -19,8 +19,12 @@ public class BBCTests {
 	}
 	@After
 	public void cleanUp(){
-		//driver.close();
-	}
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		driver.close();	}
 	@Test
 	public void test1(){
 		WebElement searchText = driver.findElement(By.name("searchText"));
@@ -41,6 +45,32 @@ public class BBCTests {
 
 		//WebElement results = driver.findElement(By.tagName("dl"));
 		System.out.println(results.getText());
+	}
+	
+		@Test
+	public void test2() {
+
+		WebElement element = driver.findElement(By.name("searchText"));
+		element.sendKeys("software");
+		WebElement btt = driver.findElement(By.id("author"));
+		btt.click();
+		element.submit();
+		WebDriverWait wait = new WebDriverWait(driver, 1);
+		WebElement results = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("dd")));
+		assertTrue(results.getText().toLowerCase().contains("software"));			
+	}
+	
+	@Test
+	public void test3() {
+
+		WebElement element = driver.findElement(By.name("searchText"));
+		element.sendKeys("software");
+		WebElement btt = driver.findElement(By.id("both"));
+		btt.click();
+		element.submit();
+		WebDriverWait wait = new WebDriverWait(driver, 1);
+		WebElement results = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("dl")));
+		assertTrue(results.getText().toLowerCase().contains("software"));			
 	}
 	
 	@Test
