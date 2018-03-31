@@ -11,7 +11,7 @@ import org.openqa.selenium.*;
 public class BBCTests {
 	
 	private WebDriver driver = null;
-	private String geckoDriverLocation = "C:\\Users\\Wave\\Downloads\\geckodriver-v0.20.0-win64\\geckodriver.exe";
+	private String geckoDriverLocation = "C:\\Users\\Amilcar\\Documents\\GMU\\SWE 437\\Assignment 8\\geckodriver-v0.20.0-win64\\geckodriver.exe";
 	@Before
 	public void setUp() {
 		if(driver == null){
@@ -152,10 +152,15 @@ public class BBCTests {
 		btt.click(); // Set searchScope to quote
 		element.submit(); //Submit for results
 		
-		WebDriverWait wait = new WebDriverWait(driver, 1); // Wait for table to appear on the web page
-		WebElement results = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("table")));
-
-		WebElement resultArea = results.findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
+        //wait for page to load
+        try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+        
+		WebElement resultArea = driver.findElement(By.tagName("table")).findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
 				.findElement(By.tagName("td"));
 		try {
 			resultArea.findElement(By.tagName("p"));
@@ -175,9 +180,9 @@ public class BBCTests {
 	public void searchTextNoResultSearchScopeQuote()
 	{
 		//Expected test results:
-		//		No description list html element. A paragraph element with â€œdid not match any quotesâ€� in its text.
+		//		A paragraph element with �did not match any quotes" in its text.
 		//
-		//		The last link in the â€˜User Searchesâ€™ lists is the test search, with matching search text and scope in the URL.
+		//		The last link in the "User Searches" lists is the test search, with matching search text.
 
 		String searchString = "1------------------4";
         //Place focus on search text field
@@ -190,11 +195,16 @@ public class BBCTests {
         searchScope.click();
         //Submit form
         searchTextField.submit();
-        //Wait for page to load
-        WebDriverWait wait = new WebDriverWait(driver, 1);
-        WebElement htmlTable = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("table")));
+        //wait for page to load
+        try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+        
         //Checking test result
-        String secondPElement = htmlTable.findElement( By.tagName("tbody")).findElement( By.tagName("tr"))
+        String secondPElement = driver.findElement(By.tagName("table")).findElement( By.tagName("tbody")).findElement( By.tagName("tr"))
         		.findElement(By.tagName("td")).findElement(By.tagName("p")).getText();
         assertTrue( secondPElement.equals("Your search - " + searchString + " - did not match any quotes."));
         
