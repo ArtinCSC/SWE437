@@ -16,19 +16,21 @@ public class BBCTests {
 	public void setUp() {
 		if(driver == null){
 			System.setProperty("webdriver.gecko.driver",geckoDriverLocation);
-			driver = new FirefoxDriver();
+			
 		}
+		driver = new FirefoxDriver();
 		driver.get("https://cs.gmu.edu:8443/offutt/servlet/quotes.quoteserve");
 	}
 	@After
 	public void cleanUp(){
 
-		try {
+		/*try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}*/
+		driver.close();	
 		}
-		driver.close();	}
 
 	/*=============================================
 	 * Waits until an element with tag waitTagName
@@ -145,25 +147,30 @@ public class BBCTests {
 		
 		WebDriverWait wait = new WebDriverWait(driver, 1); // Wait for table to appear on the web page
 		WebElement results = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("table")));
-		try {// Check the result area for 
-			WebElement resultArea = results.findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
-					.findElement(By.tagName("td"));
+
+		WebElement resultArea = results.findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
+				.findElement(By.tagName("td"));
+		try {
 			resultArea.findElement(By.tagName("p"));
-			resultArea.findElement(By.tagName("dl"));
-
 		} catch (NoSuchElementException e) {
-			System.out.println(e);
+			try {
+			resultArea.findElement(By.tagName("dl"));
+			}
+			catch (NoSuchElementException e2) {
+			 return;
+			}
 		}
-
+		
+		fail();
 	}
-	
+
 	@Test
 	public void searchTextNoResultSeachScopeQuote()
 	{
 		//Expected test results:
-		//		No description list html element. A paragraph element with �did not match any quotes� in its text.
+		//		No description list html element. A paragraph element with â€œdid not match any quotesâ€� in its text.
 		//
-		//		The last link in the �User Searches� lists is the test search, with matching search text and scope in the URL.
+		//		The last link in the â€˜User Searchesâ€™ lists is the test search, with matching search text and scope in the URL.
 
 		String searchString = "1------------------4";
         //Place focus on search text field
