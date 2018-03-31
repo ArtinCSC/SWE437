@@ -29,7 +29,7 @@ public class BBCTests {
 			e.printStackTrace();
 		}*/
 		driver.close();	
-		}
+	}
 
 	/*=============================================
 	 * Waits until an element with tag waitTagName
@@ -156,8 +156,7 @@ public class BBCTests {
         try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			fail("Problem with thread.sleep in searchTextNoneSearchScopeQuote()");
 		}
         
 		WebElement resultArea = driver.findElement(By.tagName("table")).findElement(By.tagName("tbody")).findElement(By.tagName("tr"))
@@ -175,7 +174,10 @@ public class BBCTests {
 		
 		fail();
 	}
-
+	/*
+	 * Tests for correct search result when using a string that
+	 * 	is known to produce no results and scope is to quote.
+	 */
 	@Test
 	public void searchTextNoResultSearchScopeQuote()
 	{
@@ -199,8 +201,7 @@ public class BBCTests {
         try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			fail("Problem with thread.sleep in searchTextNoResultSearchScopeQuote()");
 		}
         
         //Checking test result
@@ -212,7 +213,10 @@ public class BBCTests {
         assertTrue( checkLastUserSearch( searchString ) );
         
 	}
-	
+	/*
+	 * Helper function, used to check if the last entry in 'User Searches"
+	 * 	matches string searchText
+	 */
 	public boolean checkLastUserSearch( String searchText ){
 		/*
 		 * returns a boolean value:
